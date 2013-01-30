@@ -1,23 +1,29 @@
 {
-	"name": "chrisboulton/php-resque-scheduler",
+	"name": "kamisama/php-resque-ex-scheduler",
 	"type": "library",
-	"description": "php-resque-scheduler is a PHP port of resque-scheduler, which adds support for scheduling items in the future to Resque.",
+	"description": "php-resque-ex-scheduler is a PHP port of resque-scheduler, which adds support for scheduling jobs to PHP-Resque.",
 	"authors": [
 		{
 			"name": "Chris Boulton",
 			"email": "@chrisboulton"
+		},
+		{
+			"name": "Wan Qi chen",
+			"email": "kami@kamisama.me",
+			"homepage": "http://www.kamisama.me"
 		}
 	],
 	"autoload": {
 		"psr-0": {
-			"ResqueScheduler": "lib/"
+			"ResqueScheduler": "lib"
 		}
 	},
-	"repositories": [
-		{ "type": "git", "url": "https://github.com/chrisboulton/php-resque" }
-	],
-	"require": {
-		"chrisboulton/php-resque": "dev-master"
+	"support": {
+		"email": "kami@kamisama.me",
+		"issues": "https://github.com/kamisama/php-resque-ex-scheduler/issues",
+		"source": "https://github.com/kamisama/php-resque-ex-scheduler"
 	},
-	"minimum-stability": "dev"
+	"require": {
+		"kamisama/php-resque-ex": ">=1.2.1"
+	}
 }
