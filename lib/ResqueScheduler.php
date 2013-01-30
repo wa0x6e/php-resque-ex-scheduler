@@ -3,7 +3,8 @@
 * ResqueScheduler core class to handle scheduling of jobs in the future.
 *
 * @package		ResqueScheduler
-* @author		Chris Boulton <chris@bigcommerce.com>
+* @author		Chris Boulton <chris@bigcommerce.com> (Original)
+* @author      Wan Qi Chen <kami@kamisama.me>
 * @copyright	(c) 2012 Chris Boulton
 * @license		http://www.opensource.org/licenses/mit-license.php
 */
@@ -11,8 +12,9 @@ namespace Kamisama\ResqueScheduler;
 
 class ResqueScheduler
 {
-
-    const QUEUE_NAME = '_scheduler_';
+    // Name of the scheduler queue
+    // Should be as unique as possible
+    const QUEUE_NAME = '_schdlr_';
 
     /**
      * Enqueue a job in a given number of seconds from now.
@@ -20,15 +22,16 @@ class ResqueScheduler
      * Identical to Resque::enqueue, however the first argument is the number
      * of seconds before the job should be executed.
      *
-     * @param int     $in          Number of seconds from now when the job should be executed.
-     * @param string  $queue       The name of the queue to place the job in.
-     * @param string  $class       The name of the class that contains the code to execute the job.
-     * @param array   $args        Any optional arguments that should be passed when the job is executed.
-     * @param boolean $trackStatus Set to true to be able to monitor the status of a job.
+     * @param   int     $in             Number of seconds from now when the job should be executed.
+     * @param   string  $queue          The name of the queue to place the job in.
+     * @param   string  $class          The name of the class that contains the code to execute the job.
+     * @param   array   $args           Any optional arguments that should be passed when the job is executed.
+     * @param   boolean $trackStatus    Set to true to be able to monitor the status of a job.
+     * @return  string                  Job ID
      */
     public static function enqueueIn($in, $queue, $class, array $args = array(), $trackStatus = false)
     {
-        self::enqueueAt(time() + $in, $queue, $class, $args, $trackStatus);
+        return self::enqueueAt(time() + $in, $queue, $class, $args, $trackStatus);
     }
 
     /**
@@ -38,18 +41,24 @@ class ResqueScheduler
      * (either UNIX timestamp in integer format or an instance of the DateTime
      * class in PHP).
      *
-     * @param DateTime|int $at          Instance of PHP DateTime object or int of UNIX timestamp.
-     * @param string       $queue       The name of the queue to place the job in.
-     * @param string       $class       The name of the class that contains the code to execute the job.
-     * @param array        $args        Any optional arguments that should be passed when the job is executed.
-     * @param boolean      $trackStatus Set to true to be able to monitor the status of a job. *
+     * @param   DateTime|int $at            Instance of PHP DateTime object or int of UNIX timestamp.
+     * @param   string       $queue         The name of the queue to place the job in.
+     * @param   string       $class         The name of the class that contains the code to execute the job.
+     * @param   array        $args          Any optional arguments that should be passed when the job is executed.
+     * @param   boolean      $trackStatus   Set to true to be able to monitor the status of a job.
+     * @return  string                      Job ID
      */
     public static function enqueueAt($at, $queue, $class, $args = array(), $trackStatus = false)
     {
         self::validateJob($class, $queue);
 
+        $args['id'] = md5(uniqid('', true));
         $job = self::jobToHash($queue, $class, $args, $trackStatus);
         self::delayedPush($at, $job);
+
+        if ($trackStatus) {
+            \Resque_Job_Status::create($args['id'], Job\Status::STATUS_SCHEDULED);
+        }
 
         \Resque_Event::trigger(
             'afterSchedule',
@@ -60,6 +69,8 @@ class ResqueScheduler
                 'args'  => $args,
             )
         );
+
+        return $args['id'];
     }
 
     /**
