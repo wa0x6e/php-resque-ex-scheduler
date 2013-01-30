@@ -2,6 +2,9 @@
 	"name": "kamisama/php-resque-ex-scheduler",
 	"type": "library",
 	"description": "php-resque-ex-scheduler is a PHP port of resque-scheduler, which adds support for scheduling jobs to PHP-Resque.",
+	"keywords": ["job", "background", "redis", "resque", "queue", "php", "schedule", "cron"],
+	"homepage": "http://www.github.com/kamisama/php-resque-ex-scheduler/",
+	"license": "MIT",
 	"authors": [
 		{
 			"name": "Chris Boulton"
