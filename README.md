@@ -101,3 +101,4 @@ of the job, the class name of the job, and the job's arguments.
 ## Contributors ##
 
 * chrisboulton
+* Wan Qi Chen (Kamisama)
