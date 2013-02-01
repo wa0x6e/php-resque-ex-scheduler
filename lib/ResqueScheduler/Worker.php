@@ -80,8 +80,13 @@ class Worker extends \Resque_Worker
                 array(
                 'message' => 'Moving scheduled job ' . strtoupper($item['class']) . ' to ' . strtoupper($item['queue']),
                 'data' => array(
-                    'type' => 'schedule-in',
-                    'args' => array('timestamp' => $timestamp, 'class' => $item['class'], 'queue' => $item['queue'])
+                    'type' => 'movescheduled',
+                    'args' => array(
+                        'timestamp' => (int)$timestamp,
+                        'class' => $item['class'],
+                        'queue' => $item['queue'],
+                        'job_id' => $item['args'][0]['id']
+                        )
                     )
                 ),
                 self::LOG_TYPE_INFO
