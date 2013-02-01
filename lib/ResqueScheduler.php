@@ -19,6 +19,8 @@ class ResqueScheduler
     // Should be as unique as possible
     const QUEUE_NAME = '_schdlr_';
 
+    const VERSION = '1.0.2';
+
     /**
      * Enqueue a job in a given number of seconds from now.
      *
