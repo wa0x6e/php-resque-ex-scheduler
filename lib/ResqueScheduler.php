@@ -10,6 +10,9 @@
 */
 namespace Kamisama\ResqueScheduler;
 
+require_once 'ResqueScheduler' . DIRECTORY_SEPARATOR . 'Job' . DIRECTORY_SEPARATOR . 'Status.php';
+require_once 'ResqueScheduler' . DIRECTORY_SEPARATOR . 'Stat.php';
+
 class ResqueScheduler
 {
     // Name of the scheduler queue
@@ -86,6 +89,7 @@ class ResqueScheduler
         $redis->rpush(self::QUEUE_NAME . ':' . $timestamp, json_encode($item));
 
         $redis->zadd(self::QUEUE_NAME, $timestamp, $timestamp);
+        Stat::incr();
     }
 
     /**
