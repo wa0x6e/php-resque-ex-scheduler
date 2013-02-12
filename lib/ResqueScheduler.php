@@ -19,7 +19,7 @@ class ResqueScheduler
     // Should be as unique as possible
     const QUEUE_NAME = '_schdlr_';
 
-    const VERSION = '1.0.2';
+    const VERSION = '1.1.0';
 
     /**
      * Enqueue a job in a given number of seconds from now.
@@ -58,7 +58,7 @@ class ResqueScheduler
         self::validateJob($class, $queue);
 
         $args['id'] = md5(uniqid('', true));
-        $job = self::jobToHash($queue, $class, $args, $trackStatus);
+        $job = self::jobToHash($queue, $class, $args, $trackStatus, microtime(true));
         self::delayedPush($at, $job);
 
         if ($trackStatus) {
@@ -176,15 +176,17 @@ class ResqueScheduler
      * @param string $queue Name of the queue the job will be placed on.
      * @param string $class Name of the job class.
      * @param array  $args  Array of job arguments.
+     * @param int    $startTime Unix timestamp with microsecond for the job creation time
      */
 
-    private static function jobToHash($queue, $class, $args, $trackStatus)
+    private static function jobToHash($queue, $class, $args, $trackStatus, $startTime)
     {
         return array(
             'class' => $class,
             'args'  => array($args),
             'queue' => $queue,
-            'track' => $trackStatus
+            'track' => $trackStatus,
+            's_time' => $startTime
         );
     }
 
