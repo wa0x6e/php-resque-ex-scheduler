@@ -10,10 +10,8 @@ if (!empty($RESQUE_PHP)) {
 }
 
 // Load resque-scheduler
-require_once dirname(dirname(__FILE__)) . '/lib/ResqueScheduler.php';
+require_once dirname(dirname(__FILE__)) . '/lib/ResqueScheduler/ResqueScheduler.php';
 require_once dirname(dirname(__FILE__)) . '/lib/ResqueScheduler/Worker.php';
-
-use Kamisama\ResqueScheduler;
 
 $REDIS_BACKEND = getenv('REDIS_BACKEND');
 $REDIS_DATABASE = getenv('REDIS_DATABASE');

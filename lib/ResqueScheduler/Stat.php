@@ -8,7 +8,7 @@
  * @author      Wan Qi Chen <kami@kamisama.me>
  * @license     http://www.opensource.org/licenses/mit-license.php
  */
-namespace Kamisama\ResqueScheduler;
+namespace ResqueScheduler;
 
 class Stat extends \Resque_Stat
 {

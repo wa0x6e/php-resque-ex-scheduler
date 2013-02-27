@@ -9,7 +9,7 @@
  * @license		http://www.opensource.org/licenses/mit-license.php
  */
 
-namespace Kamisama\ResqueScheduler;
+namespace ResqueScheduler;
 
 class Worker extends \Resque_Worker
 {
@@ -94,7 +94,7 @@ class Worker extends \Resque_Worker
                 self::LOG_TYPE_INFO
             );
             \Resque_Event::trigger(
-                'beforeDelayedEneue',
+                'beforeDelayedEnqueue',
                 array(
                     'queue' => $item['queue'],
                     'class' => $item['class'],
@@ -112,7 +112,13 @@ class Worker extends \Resque_Worker
      */
     protected function sleep()
     {
-        $this->log(array('message' => 'Sleeping for ' . $this->interval, 'data' => array('type' => 'sleep', 'second' => $this->interval)), self::LOG_TYPE_DEBUG);
+        $this->log(
+            array(
+                'message' => 'Sleeping for ' . $this->interval,
+                'data' => array('type' => 'sleep', 'second' => $this->interval)
+            ),
+            self::LOG_TYPE_DEBUG
+        );
         sleep($this->interval);
     }
 

@@ -1,5 +1,10 @@
 ##Changelog
 
+###**v1.1.1** [2012-02-27] 
+
+* [fix] Fix namespace incoherence with Composer
+* [fix] ResqueScheduler class inside ResqueScheduler directory to reflect namespace
+
 ###**v1.1.0** [2012-02-12] 
 
 * [new] Add actual waiting time passed in scheduled queue in MoveScheduledJob log

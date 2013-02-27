@@ -8,18 +8,13 @@
 * @copyright	(c) 2012 Chris Boulton
 * @license		http://www.opensource.org/licenses/mit-license.php
 */
-namespace Kamisama\ResqueScheduler;
-
-require_once 'ResqueScheduler' . DIRECTORY_SEPARATOR . 'Job' . DIRECTORY_SEPARATOR . 'Status.php';
-require_once 'ResqueScheduler' . DIRECTORY_SEPARATOR . 'Stat.php';
+namespace ResqueScheduler;
 
 class ResqueScheduler
 {
     // Name of the scheduler queue
     // Should be as unique as possible
     const QUEUE_NAME = '_schdlr_';
-
-    const VERSION = '1.1.0';
 
     /**
      * Enqueue a job in a given number of seconds from now.
@@ -58,7 +53,7 @@ class ResqueScheduler
         self::validateJob($class, $queue);
 
         $args['id'] = md5(uniqid('', true));
-        $job = self::jobToHash($queue, $class, $args, $trackStatus, microtime(true));
+        $job = self::jobToHash($queue, $class, $args, $trackStatus);
         self::delayedPush($at, $job);
 
         if ($trackStatus) {
@@ -91,7 +86,6 @@ class ResqueScheduler
         $redis->rpush(self::QUEUE_NAME . ':' . $timestamp, json_encode($item));
 
         $redis->zadd(self::QUEUE_NAME, $timestamp, $timestamp);
-        Stat::incr();
     }
 
     /**
@@ -176,17 +170,15 @@ class ResqueScheduler
      * @param string $queue Name of the queue the job will be placed on.
      * @param string $class Name of the job class.
      * @param array  $args  Array of job arguments.
-     * @param int    $startTime Unix timestamp with microsecond for the job creation time
      */
 
-    private static function jobToHash($queue, $class, $args, $trackStatus, $startTime)
+    private static function jobToHash($queue, $class, $args, $trackStatus)
     {
         return array(
             'class' => $class,
             'args'  => array($args),
             'queue' => $queue,
-            'track' => $trackStatus,
-            's_time' => $startTime
+            'track' => $trackStatus
         );
     }
 

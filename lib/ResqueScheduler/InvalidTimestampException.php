@@ -7,7 +7,7 @@
 * @copyright	(c) 2012 Chris Boulton
 * @license		http://www.opensource.org/licenses/mit-license.php
 */
-namespace Kamisama\ResqueScheduler;
+namespace ResqueScheduler;
 
 class InvalidTimestampException extends Resque_Exception
 {
