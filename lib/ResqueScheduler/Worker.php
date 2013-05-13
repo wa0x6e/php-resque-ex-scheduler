@@ -86,8 +86,8 @@ class Worker extends \Resque_Worker
                         'class' => $item['class'],
                         'queue' => $item['queue'],
                         'job_id' => $item['args'][0]['id'],
-                        'wait' => round(microtime(true) - $item['s_time'], 3),
-                        's_wait' => $timestamp - floor($item['s_time'])
+                        'wait' => round(microtime(true) - $item['at'], 3),
+                        'at' => $timestamp - floor($item['at'])
                         )
                     )
                 ),
