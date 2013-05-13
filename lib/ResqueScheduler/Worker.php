@@ -134,7 +134,7 @@ class Worker extends \Resque_Worker
     protected function updateProcLine($status)
     {
         if (function_exists('setproctitle')) {
-            setproctitle('resque-scheduler-' . ResqueScheduler::VERSION . ': ' . $status);
+            setproctitle('resque-scheduler: ' . $status);
         }
     }
 }
