@@ -46,7 +46,7 @@ class Stat extends \Resque_Stat
      */
     public static function decr($stat = self::KEYNAME, $by = 1)
     {
-        return parent($stat, $by);
+        return parent::decr($stat, $by);
     }
 
     /**
