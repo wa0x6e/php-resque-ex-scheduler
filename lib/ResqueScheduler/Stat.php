@@ -57,6 +57,6 @@ class Stat extends \Resque_Stat
      */
     public static function clear($stat = self::KEYNAME)
     {
-        return parent($stat);
+        return parent::clear($stat);
     }
 }
