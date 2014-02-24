@@ -87,7 +87,7 @@ class Worker extends \Resque_Worker
                         'queue' => $item['queue'],
                         'job_id' => $item['args'][0]['id'],
                         'wait' => round(microtime(true) - $item['s_time'], 3),
-                        's_wait' => $timestamp - floor($item['s_time'])
+                        's_wait' => $timestamp - floor(isset($item['s_time']) ? $item['s_time'] : 0)
                         )
                     )
                 ),
