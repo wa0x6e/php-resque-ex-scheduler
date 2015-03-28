@@ -53,6 +53,7 @@ class ResqueScheduler
         self::validateJob($class, $queue);
 
         $args['id'] = md5(uniqid('', true));
+        $args['s_time'] = time();
         $job = self::jobToHash($queue, $class, $args, $trackStatus);
         self::delayedPush($at, $job);
 

@@ -86,8 +86,8 @@ class Worker extends \Resque_Worker
                         'class' => $item['class'],
                         'queue' => $item['queue'],
                         'job_id' => $item['args'][0]['id'],
-                        'wait' => round(microtime(true) - $item['s_time'], 3),
-                        's_wait' => $timestamp - floor($item['s_time'])
+                        'wait' => round(microtime(true) - (isset($item['s_time']) ? $item['s_time'] : 0), 3),
+                        's_wait' => $timestamp - floor(isset($item['s_time']) ? $item['s_time'] : 0)
                         )
                     )
                 ),
@@ -134,7 +134,7 @@ class Worker extends \Resque_Worker
     protected function updateProcLine($status)
     {
         if (function_exists('setproctitle')) {
-            setproctitle('resque-scheduler-' . ResqueScheduler::VERSION . ': ' . $status);
+            setproctitle('resque-scheduler: ' . $status);
         }
     }
 }
