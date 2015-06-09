@@ -125,12 +125,13 @@ class ResqueScheduler
      * @param $queue
      * @param $class
      * @param $args
+     * @param $trackStatus
      * @return int number of jobs that were removed
      */
-    public static function removeDelayed($queue, $class, $args)
+    public static function removeDelayed($queue, $class, $args, $trackStatus)
     {
         $destroyed=0;
-        $item = json_encode(self::jobToHash($queue, $class, $args));
+        $item = json_encode(self::jobToHash($queue, $class, $args, $trackStatus));
         $redis = \Resque::redis();
 
         foreach ($redis->keys(self::QUEUE_NAME . ':*') as $key) {
