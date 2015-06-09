@@ -107,7 +107,7 @@ class ResqueScheduler
      */
     public static function getDelayedTimestampSize($timestamp)
     {
-        $timestamp = self::toTimestamp($timestamp);
+        $timestamp = self::getTimestamp($timestamp);
 
         return \Resque::redis()->llen(self::QUEUE_NAME . ':' . $timestamp, $timestamp);
     }
