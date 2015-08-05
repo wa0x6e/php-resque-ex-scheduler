@@ -2,11 +2,11 @@
 /**
 * ResqueScheduler core class to handle scheduling of jobs in the future.
 *
-* @package		ResqueScheduler
-* @author		Chris Boulton <chris@bigcommerce.com> (Original)
+* @package      ResqueScheduler
+* @author       Chris Boulton <chris@bigcommerce.com> (Original)
 * @author      Wan Qi Chen <kami@kamisama.me>
-* @copyright	(c) 2012 Chris Boulton
-* @license		http://www.opensource.org/licenses/mit-license.php
+* @copyright    (c) 2012 Chris Boulton
+* @license      http://www.opensource.org/licenses/mit-license.php
 */
 namespace ResqueScheduler;
 
@@ -107,7 +107,7 @@ class ResqueScheduler
      */
     public static function getDelayedTimestampSize($timestamp)
     {
-        $timestamp = self::getTimestamp($timestamp);
+        $timestamp = self::toTimestamp($timestamp);
 
         return \Resque::redis()->llen(self::QUEUE_NAME . ':' . $timestamp, $timestamp);
     }
@@ -237,15 +237,24 @@ class ResqueScheduler
      *                                Defaults to now.
      * @return int|false UNIX timestamp, or false if nothing to run.
      */
-    public static function nextDelayedTimestamp($at = null)
+    public static function nextDelayedTimestamp($at = null,$future=false)
     {
         if ($at === null) {
-            $at = time();
+            if ($future)
+            {
+                $at = '+inf';
+            }
+            else
+            {
+                $at = time();
+            }
+
         } else {
             $at = self::getTimestamp($at);
         }
 
         $items = \Resque::redis()->zrangebyscore(self::QUEUE_NAME, '-inf', $at, array('limit', 0, 1));
+
         if (!empty($items)) {
             return $items[0];
         }
